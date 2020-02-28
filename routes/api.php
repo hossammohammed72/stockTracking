@@ -14,3 +14,4 @@
 
 Route::get('/marketSummary','ApiController@getMarketSummary');
 Route::get('/historicalData/{symbol}/{to}/{from}','ApiController@getHistoricalData');
+Route::get('/autocomplete','ApiController@autocomplete');
