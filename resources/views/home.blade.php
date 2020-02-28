@@ -34,33 +34,76 @@
       color: #3276b1;
       background-color: #fff;
     }
+
     .fa-heart:before {
-    content: "\f004";
-    
+      content: "\f004";
+
     }
+
     .heart-checkBox-input,
     .shopping-cart-input {
       position: absolute;
       left: -1000vw;
     }
+
     .heart-checkBox-label:hover {
       color: #da1e26a6;
     }
-    .heart-checkBox-label, .shop-cart-label {
-    color: #d2d2d2;
-    cursor: pointer;
-    font-size: 1.3rem;
-    align-self: center;
-    transition: color 0.2s ease-in-out;
-    position: relative;
-}
-    .autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; }
-    .autocomplete-suggestion { padding: 2px 5px; white-space: nowrap; overflow: hidden; }
-    .autocomplete-selected { background: #F0F0F0; }
-    .autocomplete-suggestions strong { font-weight: normal; color: #3399FF; }
-    .autocomplete-group { padding: 2px 5px; }
-    .autocomplete-group strong { display: block; border-bottom: 1px solid #000; }
+
+    .heart-checkBox-label,
+    .shop-cart-label {
+      color: #d2d2d2;
+      cursor: pointer;
+      font-size: 1.3rem;
+      align-self: center;
+      transition: color 0.2s ease-in-out;
+      position: relative;
+    }
+
+    .autocomplete-suggestions {
+      border: 1px solid #999;
+      background: #FFF;
+      overflow: auto;
+    }
+
+    .autocomplete-suggestion {
+      padding: 2px 5px;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .autocomplete-selected {
+      background: #F0F0F0;
+    }
+
+    .autocomplete-suggestions strong {
+      font-weight: normal;
+      color: #3399FF;
+    }
+
+    .autocomplete-group {
+      padding: 2px 5px;
+    }
+
+    .autocomplete-group strong {
+      display: block;
+      border-bottom: 1px solid #000;
+    }
   </style>
+  <style>
+    body {
+      padding-top: 60px;
+    }
+  </style>
+
+  <link href="assets/css/bootstrap.css" rel="stylesheet" />
+
+  <link href="assets/css/login-register.css" rel="stylesheet" />
+  <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+
+  <script src="assets/js/jquery-1.10.2.js" type="text/javascript"></script>
+  <script src="assets/js/bootstrap.js" type="text/javascript"></script>
+  <script src="assets/js/login-register.js" type="text/javascript"></script>
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
 <!--
@@ -82,118 +125,139 @@ to get the desired effect
       <ul class="navbar-nav">
 
         <li class="nav-item d-none d-sm-inline-block">
-        <h1 class="m-0 text-dark">SockAPI SPA</h1>
+          <h1 class="m-0 text-dark">SockAPI SPA</h1>
         </li>
-      </ul>
-    </nav>
-    <!-- /.navbar -->
 
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h4 class="m-0 text-dark">Keep an eye on your  most interesting stocks</h1>
-          </div><!-- /.col -->
-        </div><!-- /.row -->
-      </div><!-- /.container-fluid -->
-    </div>
-    <!-- /.content-header -->
+        @if(Auth::check())
+        <li class="nav-item">
+          <form method='post' action='{{route('logout')}}'>
+            @csrf
+            <a class="nav-link" href=""><input type='submit' value='Log Out'></a>
+          </form>
+        </li>
+        @else
+        <div class="pull-left">
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="modal" href="javascript:void(0)" onclick="openLoginModal();">Log in</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="modal" href="javascript:void(0)" onclick="openRegisterModal();">Register</a>
+          </li>
+        </div>
 
-    <!-- Main content -->
-    <div class="content">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-lg-6">
-            <div class="card">
-              <div class="card-header border-0">
-                <div class="d-flex justify-content-between">
-                  <div class="card-title">
-                    <div class="input-group">
-                      <div id="radioBtn" class="btn-group">
-                        <a class="btn btn-default btn-sm notActive" data-toggle="period" data-id='1y' data-value="1" data-unit="years">1 Year</a>
-                        <a class="btn btn-default btn-sm active" data-toggle="period" data-id='6mo' data-value="6" data-unit="months">6 Months</a>
-                        <a class="btn btn-default btn-sm notActive" data-toggle="period" data-id='2mo' data-value="2" data-unit="months">2 Month</a>
-                        <a class="btn btn-default btn-sm notActive" data-toggle="period" data-id='2w' data-value="14" data-unit="days">2 weeks</a>
-                        <a class="btn btn-default btn-sm notActive" data-toggle="period" data-id='1w' data-value="7" data-unit="days">1 week</a>
+  </div>
+  @endif
 
-                      </div>
-                      <input type="hidden" name="period" id="period">
+  </ul>
+  </nav>
+  <!-- /.navbar -->
+
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h4 class="m-0 text-dark">Keep an eye on your most interesting stocks</h1>
+        </div><!-- /.col -->
+      </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </div>
+  <!-- /.content-header -->
+
+  <!-- Main content -->
+  <div class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="card">
+            <div class="card-header border-0">
+              <div class="d-flex justify-content-between">
+                <div class="card-title">
+                  <div class="input-group">
+                    <div id="radioBtn" class="btn-group">
+                      <a class="btn btn-default btn-sm notActive" data-toggle="period" data-id='1y' data-value="1" data-unit="years">1 Year</a>
+                      <a class="btn btn-default btn-sm active" data-toggle="period" data-id='6mo' data-value="6" data-unit="months">6 Months</a>
+                      <a class="btn btn-default btn-sm notActive" data-toggle="period" data-id='2mo' data-value="2" data-unit="months">2 Month</a>
+                      <a class="btn btn-default btn-sm notActive" data-toggle="period" data-id='2w' data-value="14" data-unit="days">2 weeks</a>
+                      <a class="btn btn-default btn-sm notActive" data-toggle="period" data-id='1w' data-value="7" data-unit="days">1 week</a>
+
                     </div>
+                    <input type="hidden" name="period" id="period">
                   </div>
-                  <a href="javascript:void(0);">Historical Data</a>
                 </div>
+                <a href="javascript:void(0);">Historical Data</a>
               </div>
-              <div class="card-body">
-                <div class="d-flex">
-                  <p class="d-flex flex-column">
-                    <span class="text-bold text-lg" id='curentSymbol'></span>
-                    <span  id='curentPrice'></span>
-                  </p>
-                  <!-- <p class="ml-auto d-flex flex-column text-right" id='changePercentae'>
+            </div>
+            <div class="card-body">
+              <div class="d-flex">
+                <p class="d-flex flex-column">
+                  <span class="text-bold text-lg" id='curentSymbol'></span>
+                  <span id='curentPrice'></span>
+                </p>
+                <!-- <p class="ml-auto d-flex flex-column text-right" id='changePercentae'>
                     <span class="text-success">
                       <i class="fas fa-arrow-up"></i> 12.5%
                     </span>
                     <span class="text-muted"></span>
                   </p> -->
-                </div>
-                <!-- /.d-flex -->
+              </div>
+              <!-- /.d-flex -->
 
-                <div class="position-relative mb-4">
-                  <canvas id="indexes-chart" height="200"></canvas>
-                </div>
+              <div class="position-relative mb-4">
+                <canvas id="indexes-chart" height="200"></canvas>
+              </div>
 
-                <div class="d-flex flex-row justify-content-end">
-                  <span class="mr-2">
-                    <i class="fas fa-square text-primary"></i> High
-                  </span>
-                  <span class="mr-2">
-                    <i class="fas fa-square text-gray"></i> Low
-                  </span>
-                  <span class="mr-2">
-                    <i class="fas fa-square text-success"></i> Open
-                  </span>
-                  <span class="mr-2">
-                    <i class="fas fa-square text-danger"></i> Close
-                  </span>
-                </div>
+              <div class="d-flex flex-row justify-content-end">
+                <span class="mr-2">
+                  <i class="fas fa-square text-primary"></i> High
+                </span>
+                <span class="mr-2">
+                  <i class="fas fa-square text-gray"></i> Low
+                </span>
+                <span class="mr-2">
+                  <i class="fas fa-square text-success"></i> Open
+                </span>
+                <span class="mr-2">
+                  <i class="fas fa-square text-danger"></i> Close
+                </span>
               </div>
             </div>
           </div>
-          <!-- /.card -->
-          <div class="col-lg-6">
-            <!--Make sure the form has the autocomplete function switched off:-->          
-            <input  class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search" id="autocomplete"/>
-            <div class="autocomplete-suggestions">
-            </div>
-            <div class="card">
-              <div class="card-body table-responsive p-0">
-                <table class="table table-valign-middle my_table">
-                  <thead>
-                    <tr>
-                      <th>Symbol</th>
-                      <th>Name</th>
-                      <th>LastPrice</th>
-                      <th>Change</th>
-                      <th>Wishlist</th>
-                    </tr>
-                  </thead>
-                  <tbody id='StockPricingTable'>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <!-- /.card -->
+        </div>
+        <!-- /.card -->
+        <div class="col-lg-6">
+          <!--Make sure the form has the autocomplete function switched off:-->
+          <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search" id="autocomplete" />
+          <div class="autocomplete-suggestions">
           </div>
-          <!-- /.col-md-6 -->
-
+          <div class="card">
+            <div class="card-body table-responsive p-0">
+              <table class="table table-valign-middle my_table">
+                <thead>
+                  <tr>
+                    <th>Symbol</th>
+                    <th>Name</th>
+                    <th>LastPrice</th>
+                    <th>Change</th>
+                    <th>Wishlist</th>
+                  </tr>
+                </thead>
+                <tbody id='StockPricingTable'>
+                </tbody>
+              </table>
+            </div>
+          </div>
           <!-- /.card -->
         </div>
         <!-- /.col-md-6 -->
+
+        <!-- /.card -->
       </div>
-      <!-- /.row -->
+      <!-- /.col-md-6 -->
     </div>
-    <!-- /.container-fluid -->
+    <!-- /.row -->
+  </div>
+  <!-- /.container-fluid -->
   </div>
   <!-- /.content -->
 
@@ -201,6 +265,70 @@ to get the desired effect
   <!-- /.control-sidebar -->
 
   <!-- Main Footer -->
+
+  <div class="modal fade login" id="loginModal">
+		      <div class="modal-dialog login animated">
+    		      <div class="modal-content">
+    		         <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Login with</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="box">
+                             <div class="content">
+                                <div class="social">
+                                    <a class="circle github" href="#">
+                                        <i class="fa fa-github fa-fw"></i>
+                                    </a>
+                                    <a id="google_login" class="circle google" href="#">
+                                        <i class="fa fa-google-plus fa-fw"></i>
+                                    </a>
+                                    <a id="facebook_login" class="circle facebook" href="#">
+                                        <i class="fa fa-facebook fa-fw"></i>
+                                    </a>
+                                </div>
+                                <div class="division">
+                                    <div class="line l"></div>
+                                      <span>or</span>
+                                    <div class="line r"></div>
+                                </div>
+                                <div class="error"></div>
+                                <div class="form loginBox">
+                                    <form method="" action="" accept-charset="UTF-8">
+                                    <input id="email" class="form-control" type="text" placeholder="Email" name="email">
+                                    <input id="password" class="form-control" type="password" placeholder="Password" name="password">
+                                    <input class="btn btn-default btn-login" type="button" value="Login" onclick="loginAjax()">
+                                    </form>
+                                </div>
+                             </div>
+                        </div>
+                        <div class="box">
+                            <div class="content registerBox" style="display:none;">
+                             <div class="form">
+                                <form method="" html="{:multipart=>true}" data-remote="true" action="" accept-charset="UTF-8">
+                                <input id="email" class="form-control" type="text" placeholder="Email" name="email">
+                                <input id="password" class="form-control" type="password" placeholder="Password" name="password">
+                                <input id="password_confirmation" class="form-control" type="password" placeholder="Repeat Password" name="password_confirmation">
+                                <input class="btn btn-default btn-register" type="button" value="Create account" name="commit">
+                                </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="forgot login-footer">
+                            <span>Looking to
+                                 <a href="javascript: showRegisterForm();">create an account</a>
+                            ?</span>
+                        </div>
+                        <div class="forgot register-footer" style="display:none">
+                             <span>Already have an account?</span>
+                             <a href="javascript: showLoginForm();">Login</a>
+                        </div>
+                    </div>
+    		      </div>
+		      </div>
+		  </div>
   <footer class="main-footer">
     <strong>Copyright &copy; 2014-2019 <a href="http://adminlte.io">AdminLTE.io</a>.</strong>
     All rights reserved.
@@ -230,5 +358,10 @@ to get the desired effect
   <script defer src="app/js/app.js"></script>
   <script defer src="dist/js/pages/dashboard3.js"></script>
 </body>
+<script type="text/javascript">
+  $(document).ready(function() {
+    openLoginModal();
+  });
+</script>
 
 </html>
